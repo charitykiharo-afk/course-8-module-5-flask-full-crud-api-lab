@@ -20,6 +20,58 @@ You’ll simulate database-like behavior with in-memory Python class objects and
 
 This lab reinforces essential backend development skills including route design, data mutation, error handling, and RESTful conventions.
 
+## API Routes
+
+The Event Management API stores events in memory while the server is running. Each
+event has an integer `id` and a non-empty `title`. All successful resource
+responses and errors are JSON, except for the empty `204 No Content` delete
+response.
+
+| Method | Route | Description | Success response |
+| --- | --- | --- | --- |
+| POST | `/events` | Create an event | `201 Created` |
+| PATCH | `/events/<id>` | Change an event title | `200 OK` |
+| DELETE | `/events/<id>` | Remove an event | `204 No Content` |
+
+### Examples
+
+Create an event:
+
+```bash
+curl -X POST http://localhost:5000/events \
+  -H "Content-Type: application/json" \
+  -d '{"title":"Hackathon"}'
+```
+
+Response (`201 Created`):
+
+```json
+{"id": 3, "title": "Hackathon"}
+```
+
+Update that event:
+
+```bash
+curl -X PATCH http://localhost:5000/events/3 \
+  -H "Content-Type: application/json" \
+  -d '{"title":"Hackathon 2025"}'
+```
+
+Response (`200 OK`):
+
+```json
+{"id": 3, "title": "Hackathon 2025"}
+```
+
+Delete an event:
+
+```bash
+curl -i -X DELETE http://localhost:5000/events/2
+```
+
+The delete request returns `204 No Content`. Missing events return `404` with an
+error message; missing or invalid titles return `400` with an error message.
+
 ## Setup Instructions
 
 ### Fork and Clone the Repository
